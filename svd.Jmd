@@ -1,0 +1,98 @@
+## Singular Value Decomposition
+Generalization of eigen values for rectangular matrices.  
+Every $m\times n$ matrix $A$ can be factored:
+$$
+A = U\Sigma V^{T}
+$$
+
+Consider $A^TA$:  
+- Shape: $n \times n$
+- Positive definite
+- Can be factored as: $V\Lambda V^T$ by the spectral theorem.  
+-  $A^TA = (V \Sigma U^{T})(U\Sigma V^{T})$
+Consider $AA^T$:  
+- Shape: $m \times m$
+- Positive definite
+- Can be factored as: $U\Lambda U^T$ by the spectral theorem.
+-  $AA^T = (U \Sigma V^{T})(V\Sigma U^{T})$
+They share all non-zero eigenvalues.
+ 
+We are looking for vectors $v_i$ such that:  
+$$
+Av_1 = \sigma_{1} u_1 \\
+... \\\
+Av_r = \sigma_{r} u_r,
+$$
+where {$u_i$} are orthogonal.  
+
+We can take $u_i = \frac{A v_i}{\sigma _i}$, then:
+$$
+\left(\frac{A v_1}{\sigma _2}\right)^T \left(\frac{A v_1}{\sigma _2}\right) = \frac{v_1^T A^T A v_2}{\sigma _1\sigma _2}
+$$
+
+Since $v_2$ is an eigenvector of $A^TA$, 
+
+$$
+\frac{v_1^T A^T A v_2}{\sigma _1\sigma _2} = \frac{v_1^T \sigma _2 ^2 v_2}{\sigma _1\sigma _2} = v_1^Tv_2 \frac{\sigma _2}{\sigma _1} = 0
+$$
+
+SVD tells us that every linear transformation can be decomposed into a "rotation", a stretch and another "rotation"  
+
+For a $2 \times 2$ matrix, the first rotation has 1 parameter, the stretching has two, and the last rotation another one, for a total of four. This matches the number of elements of the matrix.  
+Similarly, for a $3 \times 3$ matrix, the first rotation has 3 parameters, the stretching has three, and the last rotation another three, for a total of nine. 
+
+In reality, calculating $A^TA$ would be very expensive, so other methods are used.  
+
+We can choose to write the decomposition as either:
+$$
+A = 
+\begin{bmatrix}
+&...&\\
+\mathbf{u_1}&...&\mathbf{u_r}\\
+&...&
+\end{bmatrix}
+\begin{bmatrix}
+\sigma_1&0&...&0 \\
+ 0&\sigma_2&...&0 \\
+ ...&...&...&... \\
+ 0&0&...&\sigma_r
+\end{bmatrix}
+\begin{bmatrix}
+&\mathbf{v^T_1}&\\
+...&...&...\\
+&\mathbf{v^T_r}&
+\end{bmatrix}
+$$
+with dimensions $(m\times r)(r\times r)(r\times n)$  
+
+Or, we can decomposite as:
+$$
+A = 
+\begin{bmatrix}
+&...&\\
+\mathbf{u_1}&...&\mathbf{u_m}\\
+&...&
+\end{bmatrix}
+\begin{bmatrix}
+\sigma_1&0       &...&0        &0  &...\\
+ 0      &\sigma_2&...&0        &0  &...\\
+ ...    &...     &...&...      &...&...\\
+ 0      &0       &...&\sigma_r &0  &...\\
+ 0      &0       &...&0        &0  &...\\
+ ...    &...     &...&...      &...&...  
+\end{bmatrix}
+\begin{bmatrix}
+&\mathbf{v^T_1}&\\
+...&...&...\\
+&\mathbf{v^T_n}&
+\end{bmatrix}
+$$
+with dimensions $(m\times m)(m\times n)(n\times n)$  
+
+From SVD we can also find the polar decompositon:
+$$
+A = U\Sigma V^{T} = U\Sigma (U^T U) V^{T} = (U\Sigma U^T) (U V^{T}) = SQ
+$$
+where $\textit{S}$ is symmetric and $\textit{Q}$ is orthogonal.
+
+The most important (principal) component of $A$ is $\mathbf{u_1}\sigma_1\mathbf{v_1^T}$

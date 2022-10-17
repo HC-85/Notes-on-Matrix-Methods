@@ -1,0 +1,30 @@
+# Difficulties of Ax=b
+ 0. $x=A^+b$
+ 1. Matrix size and $\frac{\simga_1}{\sigma_n}$ OK, use elimination.
+ 2. $m>n=$rank, A^TA\hat{x}=A^Tb
+ 3. $m<n$ (undetermined), min norm / deep learning
+ 4. Columns nearly linearly dependent, Gram-Schmidt
+ 5. Near singular, add a penalty / SVD
+ 6. Too big, iterative methods
+ 7. WAAY too big, randomized linear algebra (sampling)
+
+For #5:
+min $\| Ax -b\|_2^2 + \delta\| x\|_2^2$ with $\delta >0$, which is :
+$$
+\begin{bmatrix}
+A \\
+\delta I
+\end{bmatrix}
+\begin{bmatrix}
+x
+\end{bmatrix}= 
+\begin{bmatrix}
+b \\
+0
+\end{bmatrix} 
+$$
+Or, $A^*x=b^*$, or $(A^TA + \delta^2 I)x = A^Tb$
+
+For any $A$, if $\delta ⟶ 0$, then $(A^TA + \delta^2 I)^{-1}A^T ⟶ A^+$
+
+If we were to do min $\| Ax -b\|_1^2 + \delta\| x\|_1^2$ with $\delta >0$, we'd get Lasso

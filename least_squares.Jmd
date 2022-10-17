@@ -1,0 +1,35 @@
+# Four ways to solve least squares problems
+
+1. The pseudo inverse of $A$, $A^+$, is such that it sends the nullspace of $A^T$ to zero as to get rid of the part that made $A$ non-invertible.
+
+We start by writing the SVD for $A$
+$$
+A = U \Sigma V^T
+$$
+If $A$ were invertible, then:
+$$
+A^{-1} = V\Sigma^{-1}U^T
+$$
+So can start writing $A^+$ as:
+$$
+V \Sigma ^+T
+$$
+
+For a fully invertible matrix, $\Sigma$ has full rank, but for a non invertible it becomes all zeros at some point.
+Then we can see that:
+$$
+\Sigma ^{-1} \Sigma = 
+\begin{bmatrix}
+1&0&0&... \\
+0&1&0&... \\
+0&0&0&... \\
+...&...&...&...
+\end{bmatrix}
+$$
+2. The second way is to solve $A^TA\hat{x}=A^Tb$
+We claim: 
+$$
+A^+b = (A^TA)^{-1}A^Tb \\
+V\Sigma ^+ U^T = (A^TA)^{-1}A^T
+$$
+3. Orthogonalize with Gram-Schmidt

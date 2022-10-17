@@ -1,0 +1,90 @@
+## Principal Component Analysis
+The matrix $A$ can be broken down into $r$ rank-1 components through SVD
+
+ $\textbf{Eckart-Young Theorem}$:
+
+The first $k$ components of $A$ combine to make $A_k$, which is the best approximation of $A$ in $k$-dimensions:
+
+Let $B$ be a matrix of rank $k$, then $\| A-B \| \geq \| A-A_k \|$. This works for several norms which will now be mentioned.
+
+ $\textbf{Vector Norms}$:
+
+ $\textit{L2-norm}$: $\|v\|_2=\sqrt{|v_1|^2+...+|v_n|^2}$
+
+ $\textit{L1-norm}$: $\|v\|_1=|v_1|+...+|v_n|$
+
+ $\textit{L-}\infty \textit{norm}$: $\|v\|_\infty =\max{|v_i|}$
+
+If you minimize a function with L1-norm, the minimizing vector is sparse.
+
+ $\textbf{Matrix Norms}$:
+
+ $\textit{L2-Norm}$: $\|A\|_F=\sqrt{|a_{11}|^2+...+|v_{nn}|^2}$
+  
+ $\textit{F-norm} (Frobenius)$: $\|A\|_F=\sqrt{|a_{11}|^2+...+|v_{nn}|^2}$
+
+ $\textit{Nuclear-norm} $: $\|A\|_{Nuclear}=\sigma _1 + ... + \sigma _r$
+
+Nuclear norm has proven good at filling in missing data. (Netflix challenge, MRI)
+
+Multiplication by orthogonal matrices don't alter the norms.
+
+#### Procedure to obtain PCA
+
+Suppose we have the following two-dimensional data:
+
+```julia; echo = false
+using Plots
+using Random
+x = randn(Float16, 100)*15
+x = x .+ abs(minimum(x))
+noise = randn(Float16, 100)*3
+y = .5x + noise
+scatter(x, y, legend = false)
+```
+We first need to center the data to mean zero:
+
+```julia; echo = false
+using Statistics
+x_center = x .- mean(x)
+y_center = y .- mean(y)
+scatter(x_center, y_center, legend = false)
+```
+
+We can calculate $A^TA$ to get:
+
+```julia; echo = false
+using LinearAlgebra
+using Printf
+A = hcat(x_center, y_center)
+ATA = transpose(A)*A
+lambda = eigvals(ATA)
+V = eigvecs(ATA)
+display(ATA)
+```
+
+Which has the eigenvalues $\lambda _1$: `j @printf "%.2f" lambda[1]` = $\sigma _1^2$, and $\lambda _2$: `j @printf "%.2f" lambda[2]` = $\sigma _2^2$.
+
+And eigenvectors $V$: 
+```julia; echo = false
+display(V)
+```
+
+We can calculate $u_1 = \frac{Av_1}{\sigma _1}$ and $u_2 = \frac{Av_2}{\sigma _2}$.
+
+```julia; echo = false
+u1 = (A*V[:,1])/(sqrt(lambda[1]))
+u2 = (A*V[:,2])/(sqrt(lambda[2]))
+display(u1)
+```
+
+```julia; echo = false
+A1 = sqrt(lambda[1])*u1*transpose(V[:,1])
+A2 = sqrt(lambda[2])*u1*transpose(V[:,2])
+scatter(A[:,1], A[:,2], legend = false)
+plot!(A1[:,1], A1[:,2], legend = false)
+plot!(A2[:,1], A2[:,2], legend = false)
+```
+This minimizes the perpendicular distance, unlike least squares which minimize the vertical distance.
+
+Sample covariance matrix: $\frac{AA^T}{N-1}$

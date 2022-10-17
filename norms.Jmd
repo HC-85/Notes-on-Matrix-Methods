@@ -1,0 +1,54 @@
+# Norms of vectors and matrices
+ $\textit{Lp-norm}$: $\|v\|_p=\sqrt{|v_1|^p+...+|v_n|^p}$
+
+ $\textit{"L0-norm"}$: $\|v\|_0=$ # of non-zero components.
+
+The "unit ball" in the L1-norm, is a diamond:
+```julia; echo = false
+x = [-1, 0, 1, 0, -1]
+y = [0, 1, 0, -1, 0]
+plot(x, y, aspect_ratio=:equal)
+```
+In the L2-norm is the circle:
+```julia; echo = false
+using Plots
+plot(cos, sin, 0, 2*pi, aspect_ratio=:equal)
+```
+
+For L-$\infty$-norm, it's a square:
+```julia; echo = false
+x = [-1, 1, 1, -1, -1]
+y = [1, 1, -1, -1, 1]
+plot(x, y, aspect_ratio=:equal)
+```
+
+Nonetheless for the "L0-norm":
+
+```julia; echo = false
+x = [-1, 1]
+y = [0, 0]
+plot(x, y, aspect_ratio=:equal, legend=false)
+x = [0, 0]
+y = [-1, 1]
+plot!(x, y, aspect_ratio=:equal)
+```
+
+Which is NOT convex for the unit ball $\| v \| \leq 1$ and is thus not a "nice" norm. 
+
+$S$ is a positive definite symmetric matrix, and the S norm is: 
+$$
+\| v \|_S = \sqrt{v^TSv}
+$$
+
+The shape of $v^TSv \leq 1$ depends on the matrix $S$, where if $S=I$, we get back the L2-norm.
+
+For matrices, we have the Frobenius norm:
+$$
+\| A \| _F = \sqrt{|a_{ij}|^2} = \sqrt{\sigma_1^2 + ... \sigma_r^2}
+$$
+
+And the nuclear norm:
+
+$$
+\| A \| _N = \sigma_1 + ... \sigma_r
+$$
